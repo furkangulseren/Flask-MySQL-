@@ -1,0 +1,23 @@
+ 
+{% extends "layout.html" %} 
+{% block content %}
+    <article class="media content-section">
+      <div class="media-body">
+          <b style="color:#61778C;">Books Recommended For You:</b>
+
+      </div>
+    </article>
+    {% set count = namespace(a=1) %}
+    <article class="media content-section">
+      <div class="media-body">
+            {% for recommendation in recommendations %}
+                <b style="color:#61778C;">{{ count.a }}.)</b> <b><a class="article-title" href="/bookSearchName/{{ recommendation }}">{{ recommendation }}</a></b>{% set count.a = count.a + 1 %}
+                <hr/>
+            {% endfor %}
+
+      </div>
+    </article>
+    
+{% endblock content %}
+
+

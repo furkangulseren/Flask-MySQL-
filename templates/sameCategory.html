@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    {% for post in posts  %}
+
+<article class="media content-section">
+  <div class="media-body">
+    <div class="article-metadata">
+      <b style="color:#61778C;">{{ post.saler_user }}</b>
+      <small class="text-muted" style="float: right;">{{ post.created_date.date() }}</small>
+    </div>
+      {% if post.image_name == None %}
+        <img src="../static/no.png" style="height: 140px;width: 100px; float: left; margin-top: 8px; margin-right: 7px;"/>
+      {% else %}
+          <a class="article-title" href="bookDetail/{{ post.id }}"><img src="/static/image/{{ post.image_name }}" alt="{{ post.image_name }}" style="height: 140px; width: 100px; float: left; margin-top: 8px; margin-right: 7px;"/></a>
+      {% endif %}
+
+
+      <h3><a class="article-title" href="/bookDetail/{{ post.id }}">{{ post.book_name }}</a></h3>
+      <input type="checkbox" class="read-more-state" id="post-1" />
+      <p class="article-content">{{ post.definition[0:124] }} <a class="article-title" href="bookDetail/{{ post.id }}">[...]</a></p>
+      <p style="float: right;"><b>{{ post.book_price }}  &#8378;</b></p>
+  </div>
+</article>
+    {% endfor %}
+{% endblock %}

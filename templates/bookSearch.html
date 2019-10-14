@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+{% block content %}
+{% set count = namespace(a=1) %}
+    {% for post in posts  %}
+
+<article class="media content-section">
+  <div class="media-body">
+    <div class="article-metadata">
+
+      <b style="color:#61778C;">{{ post.saler_user }}</b>
+      <small class="text-muted">{{ post.created_date }}</small>
+    </div>
+    <h3><a class="article-title" href="/bookDetail/{{ post.id }}">{{ count.a }}.) {{ post.book_name }}</a></h3>
+    {% set count.a = count.a + 1 %}
+      <p class="article-content">{{ post.definition }}</p>
+  </div>
+</article>
+    {% endfor %}
+
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+{% block content %}
+    {% for post in posts  %}
+
+<article class="media content-section">
+  <div class="media-body">
+    <div class="article-metadata">
+      <b style="color:#61778C;">{{ post.saler_user }}</b>
+      <small class="text-muted" style="float: right;">{{ post.created_date.date() }}</small>
+        <small class="text-muted" style="float: right; margin-right: 10px; margin-bottom: 0;">{{ post.review_number }} Comments | </small>
+       <small class="text-muted"><img src="/static/comment_logo.png" style="float: right; margin-right:5px; height:19px; width:19px;"></small>
+    </div>
+
+      {% if post.image_name == None %}
+          <a class="article-title" href="bookDetail/{{ post.id }}"><img src="../static/no.png" style="height: 140px;width: 100px; float: left; margin-top: 8px; margin-right: 7px;"/></a>
+      {% else %}
+          <a class="article-title" href="bookDetail/{{ post.id }}"><img src="/static/image/{{ post.image_name }}" alt="{{ post.image_name }}" style="height: 140px; width: 100px; float: left; margin-top: 8px; margin-right: 7px;"/></a>
+      {% endif %}
+
+      <h3><a class="article-title" href="bookDetail/{{ post.id }}">{{ post.book_name }}</a></h3>
+      <input type="checkbox" class="read-more-state" id="post-1" />
+      <div style="margin-left: 110px;"><p class="article-content">{{ post.definition[0:124] }} <a class="article-title" href="bookDetail/{{ post.id }}">[...]</a></p></div>
+      <p style="float: right;"><b>{{ post.book_price }}  &#8378;</b></p>
+  </div>
+</article>
+    {% endfor %}
+{% endblock content %} 
+
+{% block right_content %}
+    {% from "/includes/_formhelpers.html" import render_field %}
+    <div style="position: fixed;">
+        <article class="media content-section" style="width: 300px; margin-left: 50px;">
+            <div class="media-body">
+                <div class="article-metadata">
+                    <b style="color:#61778C;">Filter</b>
+                </div>
+                <form method="post" action="">
+                    <div style="height: 80px;">
+                        <div class="form-group">
+                            <b style="color: #61778C;">{{ render_field(form.book_category, class_="form-control") }}</b>
+                        </div>
+                    </div>
+                    <div style="height: 85px">
+                        <div class="form-group">
+                            <b style="color: #61778C;">{{ render_field(form.book_sale_type, class_="form-control") }}</b>
+                        </div>
+                    </div>
+
+                    <b style="color: #61778C;">From</b>
+                    {{ render_field(form.book_price_from, class_="form-control") }}
+
+                    <b style="color: #61778C;">To</b>
+                    {{ render_field(form.book_price_to, class_="form-control") }}
+
+                   <button type="submit" class="btn btn-primary" style="float: left; margin-left: 20px; margin-top: 10px;">Filter</button>
+                </form>
+                <form method="get" action="">
+                    <button type="submit" class="btn btn-primary" style="float: right; margin-right: 20px; margin-top: 10px;">Clear</button>
+                </form>
+            </div>
+        </article>
+    </div>
+{% endblock %}

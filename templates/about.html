@@ -1,0 +1,80 @@
+ 
+{% extends "layout.html" %} 
+{% block content %}
+
+<article class="media content-section">
+  <div class="media-body">
+    <h2 style="color:#61778C;">About Us</h2>
+      <hr>
+    <p class="article-content">Our main goal is to provide a web-based platform that people can exchange or lend their books in order to throw them away.
+        Thanks to that platform unused books will be used by somebody that really need it.
+        In addition to that same book will be used by different people so that the number of tree used to get a book will be reduce.
+        Also, people gain their money back by renting the book.</p>
+    <p> We are aiming to decrease it with an  human-friendly way.  </p>
+
+      <hr/>
+      <hr/>
+    <div style="float: left; width: 100%;">
+        <h2 style="color:#61778C;">Social Media Accounts</h2>
+        <hr/>
+            <a href="https://tr-tr.facebook.com/IstanbulSehirUniversitesi/"><img style="margin-top: 0px; height: 40px; width: 40px; margin-left:0px;" src="https://cdn.freebiesupply.com/logos/large/2x/facebook-3-logo-png-transparent.png" alt="facebook"></a> facebook.com/IstanbulSehirUniversitesi
+            <br/> <a href="https://twitter.com/SehirUniversite"><img style="height: 40px; width: 40px;" src="/static/twitter_logo.png" alt="twitter"></a> twitter.com/SehirUniversite
+            <br/> <a href="https://www.instagram.com/sehiruniversite/?hl=tr"><img style="height: 40px; width: 40px;" src="/static/instagram_logo.png" alt="instagram"></a> instagram.com/sehiruniversite
+        </div>
+
+
+      <div></div>
+
+
+
+
+
+<div style="float: left; width: 100%;">
+
+      <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+
+    </style>
+
+
+
+      <hr/>
+      <hr/>
+    <h2 style="color:#61778C;">Address</h2>
+      <hr>
+    <p style="float: left;">İstanbul Şehir Üniversitesi Dragos Kampüsü <br/> Orhantepe Mahallesi,
+    Turgut Özal Bulvarı, No: 21, <br/> Dragos, Kartal - İstanbul <br/> <br/>
+    Yol tarifi almak için <a href="https://www.google.com.tr/maps/place/%C4%B0stanbul+%C5%9Eehir+%C3%9Cniversitesi/@40.9050947,29.1561852,15z/data=!4m5!3m4!1s0x0:0x8f721b7cb2c4b3f6!8m2!3d40.9050947!4d29.1561852?shorturl=1">tıklayın</a>
+    <br/> <br/> <br/>
+    <b>Telefon: </b> 44 44 0 34
+    </p>
+
+      <div id="map" style="float: right; height: 250px; width: 250px;"></div>
+    <script>
+
+      function initMap() {
+        var myLatLng = {lat: 40.9050947, lng: 29.1561852};
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 12,
+          center: myLatLng
+        });
+
+        var marker = new google.maps.Marker({
+          position: myLatLng,
+          map: map,
+          title: 'Hello World!'
+        });
+      }
+    </script>
+
+      </div>
+</div>
+    </article>
+{% endblock content %}
+
+

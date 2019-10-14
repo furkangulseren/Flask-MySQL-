@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <h1>Kitap Sat</h1>
+    </hr>
+    {% from "/includes/_formhelpers.html" import render_field %}
+    {% if session.username == NULL %}
+        <meta http-equiv="refresh" content="0; url=/login" />
+    {% endif %}
+    <form method="POST" action="" enctype="multipart/form-data">
+        <div class="form-group">
+            {{ render_field(form.book_name, class_="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(form.book_author, class_="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(form.book_category, class_="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(form.book_page_number, class_="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(form.book_sale_type, class_="form-control") }}
+        </div>
+        <div class="form-group" style="width: 700px; float: left;">
+            {{ render_field(form.book_price, class_="form-control") }}
+        </div>
+        <img style="margin-top: 40px; margin-left: 5px; width: 15px; height:20px; float: right;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Turkish_lira_symbol_black.svg/1200px-Turkish_lira_symbol_black.svg.png">
+        <div class="form-group">
+            {{ render_field(form.definition, class_="form-control") }}
+        </div>
+        <p><input type="file" name="inputImage"/></p>
+        <p><input type="submit" class="btn btn-primary" value="Submit"> </p>
+    </form>
+{% endblock %}

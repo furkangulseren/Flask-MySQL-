@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+     {% for post in posts  %}
+
+<article class="media content-section">
+  <div class="media-body">
+    <div class="article-metadata">
+      <b style="color:#61778C;">{{ post.username }}</b>
+      <small class="text-muted" style="float: right;">{{ post.created_date.date() }}</small>
+    </div>
+      <b><a class="article-title" href="/bookNeedDetail/{{ post.id }}"><p class="article-content">{{ post.title }} </p></a></b>
+
+  </div>
+</article>
+    {% endfor %}
+
+    <article class="media content-section" style="margin-top: 75px;">
+  <div class="media-body">
+    <div class="article-metadata">
+      <b style="color:#61778C;">Add New Title</b>
+    </div>
+
+      <form action="/bookNeed/" method="POST" autocomplete="off">
+        <div class="form-group">
+            <label>Username</label>
+            {% if session.username == NULL %}
+               <input type="text" name="username" class="form-control" placeholder='Please login to make comment' disabled>
+          {% else %}
+                <input type="text" name="username" class="form-control" value={{ session.username }} disabled>
+          {% endif %}
+        </div>
+        <div class="form-group">
+            <label>Title</label>
+            {% if session.username == NULL %}
+            <input type="text" name="title" class="form-control" disabled >
+            {% else %}
+                <input type="text" name="title" class="form-control">
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            {% if session.username == NULL %}
+            <input type="text" name="description" class="form-control" disabled >
+            {% else %}
+                <input type="text" name="description" class="form-control" >
+            {% endif %}
+        </div>
+      {% if session.username == NULL %}
+        <p style="color:red;">Please login to make comment</p>
+      {% else %}
+        <button type="submit" class="btn btn-primary" >Submit</button>
+      {% endif %}
+        </form>
+
+  </div>
+</article>
+{% endblock %}

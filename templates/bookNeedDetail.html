@@ -1,0 +1,82 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <article class="media content-section" style="margin-bottom: 50px;">
+  <div class="media-body">
+    <div class="article-metadata">
+      <b style="color:#61778C;">{{ posts.username }}</b>
+        <small class="text-muted" style="float: right; margin-left: 10px;">{{ posts.created_date.date() }}</small>
+        <small class="article-content" style="float: right;"><b style="color: #61778C;">Visit Number:</b> {{ posts.visit_count }} | </small>
+    </div>
+    <h3><a class="article-title" href="/bookNeedDetail/{{ posts.id }}">{{ posts.title }}</a></h3>
+    <p class="article-content">{{ posts.description }}</p>
+  </div>
+</article>
+    <hr/>
+
+
+
+
+        <article class="media content-section" style="margin-bottom: 00px;">
+          <div class="media-body">
+              {% for needMessage in needMessages %}
+            <div class="article-metadata">
+
+              <b style="color:#61778C;">{{ needMessage.sender_user_name }}</b>
+                <small class="text-muted" style="float: right; margin-left: 10px;">{{ needMessage.created_date.date() }}</small>
+
+            </div>
+            <h3>{{ needMessage.title }}</h3>
+            <p class="article-content">{{ needMessage.user_message }}</p> <hr/>{% endfor %}
+          </div>
+        </article>
+
+
+
+
+
+
+
+
+    <article class="media content-section" style="margin-top: 10px;">
+  <div class="media-body">
+    <div class="article-metadata">
+      <b style="color:#61778C;">Answer</b>
+    </div>
+
+      <form action="/bookNeedDetail/{{ posts.id }}" method="POST" autocomplete="off">
+        <div class="form-group">
+            <label>Username</label>
+            {% if session.username == NULL %}
+               <input type="text" name="username" class="form-control" placeholder='Please login to make comment' disabled>
+          {% else %}
+                <input type="text" name="username" class="form-control" value={{ session.username }} disabled>
+          {% endif %}
+        </div>
+        <div class="form-group">
+            <label>Title</label>
+            {% if session.username == NULL %}
+            <input type="text" name="userTitle" class="form-control" disabled >
+            {% else %}
+                <input type="text" name="userTitle" class="form-control">
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label>Message</label>
+            {% if session.username == NULL %}
+            <input type="text" name="userMessage" class="form-control" disabled >
+            {% else %}
+                <input type="text" name="userMessage" class="form-control" >
+            {% endif %}
+        </div>
+      {% if session.username == NULL %}
+        <p style="color:red;">Please login to answer</p>
+      {% else %}
+        <button type="submit" class="btn btn-primary" >Submit</button>
+      {% endif %}
+        </form>
+
+  </div>
+</article>
+
+{% endblock %}

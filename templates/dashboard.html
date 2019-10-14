@@ -1,0 +1,67 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div>
+    <article class="media content-section" style="float: left; width:100%;">
+      <div class="media-body">
+        <div class="article-metadata">
+          <p><b style="color:#61778C;">Personal Information</b></p>
+
+        </div>
+          <p class="article-content"><b>Username: </b>{{ posts.username }}</p>
+          <p class="article-content"><b>Name - Surname:</b> {{ posts.name }}</p>
+          <p class="article-content"><b>Email:</b> {{ posts.email }}</p>
+          <p class="article-content"><b>Register Date:</b> {{ posts.register_date }}</p>
+      </div>
+    </article>
+
+    <hr/>
+
+    <article class="media content-section" style="margin-top:250px;">
+      <div class="media-body">
+        <div class="article-metadata">
+            <b style="color:#61778C;">İlandaki Kitaplarım</b>
+
+        </div>
+            {% set count = namespace(a=1) %}
+          {% for saler_post in saler_posts %}
+              <p class="article-content"><h3>{{ count.a }}.) <a class="article-title" href="bookDetail/{{ saler_post.id }}">{{ saler_post.book_name }}</a></h3></p>
+              <p class="article-content"><b>Definition:</b> {{ saler_post.definition[0:124] }}<a class="article-title" href="bookDetail/{{ saler_post.id }}">[...]</a> </p>
+              <p class="article-content"><b>Sale Type:</b> {{ saler_post.book_sale_type }}</p>
+              <p class="article-content"><b>Price:</b> {{ saler_post.book_price }} &#8378;</p>
+              <p class="article-content"><b>Published Date:</b> {{ saler_post.created_date }}</p>
+              {% if saler_post.active == 0 %}
+              <p class="article-content" style="text-align: right;"><b style="color: red;">SOLD</b></p>
+              {% endif %}
+              <hr/>
+              {% set count.a = count.a + 1 %}
+          {% endfor %}
+      </div>
+    </article>
+    </div>
+
+{% endblock %}
+
+{% block right_content %}
+    <article class="media content-section" style="margin-left: 100px; width: 250px; margin-top:15px;"><b><a href="/messages/" style="color:#61778C;">My Messages</a></b></article>
+    <article class="media content-section" style="float: right; margin-left: 100px; width: 250px; margin-top: 14px;">
+  <div class="media-body">
+    <div class="article-metadata">
+      <h6> <b style="color:#61778C;">Recently Viewed Books</b></h6>
+    </div>
+        {% set count = namespace(a=1) %}
+        {% for book in checked %}
+            {% for i in book %}
+
+
+    <h6><b>{{ count.a }}.) <a class="article-title" href="/bookDetail/{{ i.id }}">{{ i.book_name }}</a></b></h6>
+    {% set count.a = count.a + 1 %}
+
+    <p class="article-content"><u>Type</u>:<b> {{ i.book_sale_type }}</b></p>
+    <p class="article-content"><u>Price</u>:<b> {{ i.book_price }} &#8378;</b></p>
+            <hr/>
+      {% endfor %}
+  {% endfor %}
+  </div>
+</article>
+{% endblock %}

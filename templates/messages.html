@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <article class="media content-section">
+      <div class="media-body">
+          <b style="color:#61778C;">Your Messages: </b>
+      </div>
+    </article>
+
+    {% for post in posts  %}
+        <article class="media content-section">
+          <div class="media-body">
+              <b style="color:#61778C;"><a class="article-title" href="/messageDetail/{{ post }}">{{ post }}</a></b>
+          </div>
+        </article>
+    {% endfor %}
+
+{% endblock %}

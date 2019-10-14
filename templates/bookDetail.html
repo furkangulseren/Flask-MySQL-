@@ -1,0 +1,214 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div>
+    <article class="media content-section" style="margin-bottom: 00px;">
+  <div class="media-body">
+    <div class="article-metadata">
+      <b style="color:#61778C;">{{ posts.saler_user }}</b>
+        <small class="text-muted" style="float: right; margin-left: 10px;">{{ posts.created_date.date() }}</small>
+        <small class="article-content" style="float: right;"><b style="color: #61778C;">Visit Number:</b> {{ posts.visit_count }} | </small>
+    </div>
+
+      {% if posts.image_name == None %}
+          <img src="/static/no.png" style="height: 200px;width: 150px; float: left; margin-top: 8px; margin-right: 7px;">
+      {% else %}
+          <a href="/imageDetail/{{ posts.image_name }}" target="_blank"> <img src="/static/image/{{ posts.image_name }}" alt="{{ posts.image_name }}" style="height: 200px;width: 150px; float: left; margin-top: 8px; margin-right: 7px;"></a>
+      {% endif %}
+
+
+    <h3><a class="article-title" href="/bookDetail/{{ posts.id }}">{{ posts.book_name }}</a></h3>
+      <div style="margin-left: 160px;"></d><p class="article-content">{{ posts.definition }}</p></div>
+
+
+    <p class="article-content"><b style="color: #61778C;">Author:</b> {{ posts.book_author }}</p>
+    <p class="article-content"><b style="color: #61778C;">Book Page Number:</b> {{ posts.book_page_number }}</p>
+    <p class="article-content"><b style="color: #61778C;">Book Category:</b> {{ posts.book_category }}</p>
+    <p class="article-content"><b style="color: #61778C;">Book Sale Type:</b> {{ posts.book_sale_type }}</p>
+    <p class="article-content" style="float: left; margin-top: 3px;"><b style="color: #61778C;">Book Price:</b><b> {{ posts.book_price }} &#8378;</b></p>
+      {% if session.username == NULL %}
+        <p style="color:red; float: right;">Please login to make an offer</p>
+      {% elif posts.saler_user == session.username %}
+         <p style="float: right;"><a class="btn btn-primary" style="background-color: red;" href="/soldBook/{{ posts.id }}">Mark as Sold</a> </p>
+      {% else %}
+          <form action="/messageDetail/{{ posts.saler_user }}">
+          <table style="float: right;">
+            <tbody>
+                <tr>
+                    <td><div id="paypal-button" ></div></td>
+                    <td><button type="submit" class="btn btn-primary" style="float: right;">Make an Offer</button></td>
+                </tr>
+            </tbody>
+        </table>
+
+
+
+            <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+            <script>
+            paypal.Button.render({
+                // Configure environment
+                env: 'sandbox',
+                client: {
+                sandbox: 'demo_sandbox_client_id',
+                production: 'demo_production_client_id'
+            },
+                // Customize button (optional)
+                locale: 'en_US',
+                style: {
+                size: 'small',
+                color: 'gold',
+                shape: 'pill',
+            },
+            // Set up a payment
+            payment: function (data, actions) {
+            return actions.payment.create({
+                transactions: [{
+                amount: {
+                total: '0.01',
+                currency: 'USD'
+            }
+            }]
+            });
+            },
+            // Execute the payment
+            onAuthorize: function (data, actions) {
+            return actions.payment.execute()
+            .then(function () {
+            // Show a confirmation message to the buyer
+            window.alert('Thank you for your purchase!');
+            });
+            }
+            }, '#paypal-button');
+            </script>
+
+
+
+          </form>
+      {% endif %}
+  </div>
+</article>
+
+    </div>
+<hr/>
+    <article class="media content-section" style="margin-top: 100px;">
+  <div class="media-body">
+    <div class="article-metadata">
+      <b style="color:#61778C;">Book Comments</b>
+    </div>
+    {% if book_comments == null %}
+        <p class="article-content"><b>There is no comment.</b></p>
+    {% else %}
+        {% set count = namespace(a=0) %}
+      {% for book_comment in book_comments %}
+        <table>
+      <tbody>
+      <tr>
+      <td><p class="article-content" style="float: left;"><b>{{ book_comment.reviewerName }}</b></p>
+      </td>
+
+      <td style="width: 370px;">&nbsp;</td>
+      <td><p class="article-content">{{ book_comment.created_date.date() }}</p></td>
+      </tr>
+      <tr>
+          {% if session.username == posts.saler_user %}
+              <td colspan="2"><p class="article-content" style="width:450px;">{{ book_comment.review }}</p></td>
+              {% if comment_prediction[count.a].reviewLength > 50 %}
+                  <td><b>Rating:</b> {{ book_comment.reviewerRatings }}<br/>
+                      <b>Evaluation:</b> <br/> {{ comment_prediction[count.a].probability }} <b>|</b> {{ comment_prediction[count.a].prediction }}<br/>
+                      <p><b>Summary:</b> <br/> {% for i in comment_prediction[count.a].summary %}{{ i }} <br/> {% endfor %}</p>
+                  </td>
+              {% else %}
+                  <td><b>Rating:</b> {{ book_comment.reviewerRatings }}<br/>
+                      <b>Evaluation:</b> <br/> {{ comment_prediction[count.a].probability }} <b>|</b> {{ comment_prediction[count.a].prediction }}<br/>
+                  </td>
+              {% endif %}
+          {% else %}
+              <td colspan="3"><p class="article-content">{{ book_comment.review }}</p></td>
+          {% endif %}
+      </tr>
+      </tbody>
+</table>
+          {% set count.a = count.a + 1 %}
+          <hr/>
+      {% endfor %}
+    {% endif %}
+
+  </div>
+</article>
+
+    <article class="media content-section">
+  <div class="media-body">
+    <div class="article-metadata">
+      <b style="color:#61778C;">Make Comment</b>
+    </div>
+
+      <form action="/comment/{{ posts.id }}/" method="POST">
+        <div class="form-group">
+            <label>Username</label>
+            {% if session.username == NULL %}
+               <input type="text" name="username" class="form-control" placeholder='Please login to make comment' disabled>
+          {% else %}
+                <input type="text" name="username" class="form-control" value={{ session.username }} disabled>
+          {% endif %}
+        </div>
+        <div class="form-group">
+
+            <input type="text" name="book_name" class="form-control" value={{ posts.book_name }} disabled hidden>
+        </div>
+
+        <div class="form-group">
+            <label>Comment</label>
+            {% if session.username == NULL %}
+            <input type="text" name="comment" class="form-control" disabled >
+            {% else %}
+                <input type="text" name="comment" class="form-control">
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label>Rating</label>
+            {% if session.username == NULL %}
+            <input type="text" name="rating" class="form-control" disabled >
+            {% else %}
+                <input type="text" name="rating" class="form-control" >
+            {% endif %}
+        </div>
+      {% if session.username == NULL %}
+        <p style="color:red;">Please login to make comment</p>
+      {% else %}
+        <button type="submit" class="btn btn-primary" >Submit</button>
+      {% endif %}
+        </form>
+
+  </div>
+</article>
+
+
+    <hr/>
+{% endblock %}
+{% block right_content %}
+
+<div style="margin-left: 100px; width: 250px;">
+<article class="media content-section">
+  <div class="media-body">
+    <div class="article-metadata">
+      <h6> <b style="color:#61778C;">Other Books From The Same Category</b></h6>
+    </div>
+        {% set count = namespace(a=1) %}
+        {% for same_category in same_categories %}
+            {% if same_category.image_name == None %}
+                <p style="text-align: center;"><img src="/static/no.png" style="height: 100px; width: 80px;"/></p>
+            {% else %}
+                <p style="text-align: center;"><a class="article-title" href="/bookDetail/{{ same_category.id }}"><img src="/static/image/{{ same_category.image_name }}" style="height: 100px; width: 80px;"></a></p>
+            {% endif %}
+            <h6><b><a class="article-title" href="/bookDetail/{{ same_category.id }}">{{ count.a }}.) {{ same_category.book_name }}</a></b></h6>
+            {% set count.a = count.a + 1 %}
+
+    <p class="article-content"><u>Type</u>:<b> {{ same_category.book_sale_type }}</b></p>
+    <p class="article-content"><u>Price</u>:<b> {{ same_category.book_price }} &#8378;</b></p>
+            <hr/>
+      {% endfor %}
+  <a href="/sameCategory/{{ posts.book_category }}" style="color:#61778C;">Check other books...</a>
+  </div>
+</article>
+</div>
+{% endblock %}
